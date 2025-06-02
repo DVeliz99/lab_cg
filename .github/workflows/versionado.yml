@@ -35,8 +35,6 @@ jobs:
           fi
           NEXT_TAG="v$NEXT_TAG"
           git tag -d "$NEXT_TAG" || true
-          if git show-ref --verify --quiet refs/heads/master; then git branch -D master; fi
-          git checkout master
           cz bump --yes
 
     - name: Push cambios y tags
