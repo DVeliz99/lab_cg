@@ -34,3 +34,10 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+/*  // Inyección de dependencias
+  final firestore = FirebaseFirestore.instance;
+  final dataSource = FirebaseUserDataSource(firestore: firestore);
+  final repository = UserRepositoryImpl(dataSource: dataSource);
+   */
