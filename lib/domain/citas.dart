@@ -1,13 +1,13 @@
 
 class CitaLaboratorio {
-  final int id;                      // ID interno de la cita
-  final String uid;                  // UID único de la cita
-  final String nombrePaciente;       // Nombre del paciente
-  final String tipoCita;             // Tipo de cita o examen
-  final DateTime fecha;              // Fecha seleccionada
-  final String hora;                 // Hora seleccionada
-  final String direccion;            // Dirección del domicilio
-  final String estado;               // Estado: pendiente, confirmada, etc.
+  final int id;                      
+  final String uid;                  
+  final String nombrePaciente;       
+  final String tipoCita;             
+  final DateTime fecha;              
+  final String hora;                
+  final String direction;            
+  final String estado;               
 
   CitaLaboratorio({
     required this.id,
@@ -16,7 +16,7 @@ class CitaLaboratorio {
     required this.tipoCita,
     required this.fecha,
     required this.hora,
-    required this.direccion,
+    required this.direction,
     required this.estado,
   });
 }
