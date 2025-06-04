@@ -1,13 +1,13 @@
 
 class CitaLaboratorio {
-  final int id;                      
-  final String uid;                  
-  final String nombrePaciente;       
-  final String tipoCita;             
-  final DateTime fecha;              
-  final String hora;                
-  final String direction;            
-  final String estado;               
+  final int id;
+  final String uid;
+  final String nombrePaciente;
+  final String tipoCita;
+  final DateTime fecha;
+  final String hora;
+  final String direction;
+  final String estado;
 
   CitaLaboratorio({
     required this.id,
