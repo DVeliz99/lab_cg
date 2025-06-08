@@ -1,5 +1,7 @@
 import 'package:lab_cg/domain/user.dart';
 import 'package:lab_cg/data/data_sources/user_data_source.dart';
+import 'package:lab_cg/data/repositories/user_repository.dart';
+
 
 class UserRepositoryImpl {
   final UserDataSource dataSource;
