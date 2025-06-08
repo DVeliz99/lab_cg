@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'bottom_nav_bar.dart';
+import 'package:lab_cg/presentation/screens/home.dart';
+import 'package:lab_cg/presentation/screens/settings.dart';
+import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 
 void main() {
@@ -19,12 +21,12 @@ class MyApp extends StatelessWidget {
       initialRoute: 'init',
       routes: {
         "init": (context) => Login(),
-        "app-controller": (context) => BottomNavBar(),
+        "app-controller": (context) => PopUpMenu(),
+        "settings": (context) => SettingsScreen(),
       },
     );
   }
 }
-
 
 /*  // Inyección de dependencias
   final firestore = FirebaseFirestore.instance;
