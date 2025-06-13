@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lab_cg/presentation/screens/home.dart';
 import 'package:lab_cg/presentation/screens/settings.dart';
+import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         "init": (context) => Login(),
         "app-controller": (context) => PopUpMenu(),
         "settings": (context) => SettingsScreen(),
+        "agendar-cita": (context) => const AgendarCitaScreen(),
       },
     );
   }
