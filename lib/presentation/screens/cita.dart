@@ -221,7 +221,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       estado: 'pendiente',
     );
 
-    //await _useCase(cita);
+    //await _useCase(cita)_;
     ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cita agendada exitosamente.')));
   }
