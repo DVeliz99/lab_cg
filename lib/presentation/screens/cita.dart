@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/domain/citas.dart';
-import 'package:lab_cg/data/data_sources/cita_data_source.dart';
-import 'package:lab_cg/use_cases/cita_use_cases.dart';
 
 class AgendarCitaScreen extends StatefulWidget {
   const AgendarCitaScreen({super.key});
