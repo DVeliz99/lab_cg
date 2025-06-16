@@ -3,5 +3,5 @@
 export 'home.dart';
 export 'settings.dart';
 export 'cita.dart';
-export 'services.dart';     
+export 'services.dart';
 export 'resultados.dart';

@@ -16,7 +16,7 @@ class ResultadosScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Resultados')),
       body: RefreshIndicator(
         onRefresh: () async {
-          
+
           await Future.delayed(const Duration(seconds: 1));
         },
         child: ListView.separated(

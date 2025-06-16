@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
   routes: {
     'init'          : (context) => Login(),
     'app-controller': (context) => PopUpMenu(),
-    
+
     'settings'      : (context) => SettingsScreen(),
     'agendar-cita'  : (context) => const AgendarCitaScreen(),
-    
+
     'servicios'     : (context) => const ServiciosScreen(),
     'resultados'    : (context) => const ResultadosScreen(),
   },
