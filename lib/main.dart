@@ -4,6 +4,12 @@ import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 
+import 'package:lab_cg/presentation/screens/services.dart';
+import 'package:lab_cg/presentation/screens/resultados.dart';
+
+
+
+
 void main() {
   runApp(const MyApp());
 }
@@ -19,12 +25,26 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       initialRoute: 'init',
+
+  routes: {
+    'init'          : (context) => Login(),
+    'app-controller': (context) => PopUpMenu(),
+
+    'settings'      : (context) => SettingsScreen(),
+    'agendar-cita'  : (context) => const AgendarCitaScreen(),
+
+    'servicios'     : (context) => const ServiciosScreen(),
+    'resultados'    : (context) => const ResultadosScreen(),
+  },
+
+=======
       routes: {
         "init": (context) => Login(),
         "app-controller": (context) => PopUpMenu(),
         "settings": (context) => SettingsScreen(),
         "agendar-cita": (context) => const AgendarCitaScreen(),
       },
+
     );
   }
 }
@@ -34,3 +54,4 @@ class MyApp extends StatelessWidget {
   final dataSource = FirebaseUserDataSource(firestore: firestore);
   final repository = UserRepositoryImpl(dataSource: dataSource);
    */
+
