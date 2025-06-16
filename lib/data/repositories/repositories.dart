@@ -3,3 +3,12 @@
 │   │   de estas interfaces y no de implementaciones concretas.
 │   │   Ejemplos: user_repository.dart, order_repository.dart, ml_repository.dart
 │   │ */
+
+
+
+/*Citas */
+
+/*get citas
+
+delete citas  */
+
