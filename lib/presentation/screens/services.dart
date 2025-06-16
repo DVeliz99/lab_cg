@@ -21,7 +21,7 @@ class ServiciosScreen extends StatelessWidget {
         itemCount: _servicios.length,
         separatorBuilder: (_, __) => const SizedBox(height: 12),
         itemBuilder: (context, i) {
-          final s = _servicios[i];
+          final s = _servicios[i]; // prueba 
           return Card(
             elevation: 2,
             child: ListTile(
