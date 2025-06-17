@@ -32,7 +32,7 @@ Este repositorio contiene la estructura modular del proyecto, organizado por cap
 
 ## ✅ Buenas prácticas
 
-- Mantener las **dependencias unidireccionales**:  
+- Mantener las **dependencias unidireccionales**:
   `presentation → use_cases → domain`
 - Usar **interfaces** para invertir dependencias en `data/repositories`.
 - Realizar **tests unitarios** sobre entidades y casos de uso.
