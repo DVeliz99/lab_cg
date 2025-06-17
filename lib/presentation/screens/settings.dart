@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/presentation/widgets/toggle.dart';
 import 'package:lab_cg/presentation/widgets/divider.dart';
+import 'package:lab_cg/presentation/screens/profile_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -133,24 +134,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             child: Column(
                               children: [
                                 // Perfil
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.lock, size: 40),
-                                      SizedBox(width: 12),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 11),
-                                        child: Text(
-                                          'Perfil',
-                                          style: TextStyle(
-                                            fontSize: 25,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
+                                // Perfil
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => const ProfileScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.lock, size: 40),
+                                        const SizedBox(width: 12),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            left: 11,
+                                          ),
+                                          child: const Text(
+                                            'Perfil',
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
 
