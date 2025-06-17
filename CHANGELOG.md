@@ -1,3 +1,9 @@
+## 0.6.0 (2025-06-17)
+
+### Feat
+
+- Añadir pantalla de perfil
+
 ## 0.5.0 (2025-06-17)
 
 ### Feat
