@@ -11,7 +11,8 @@ class User {
     id = json['id'];
     uuid = json['uuid'];
     nombreUsuario = json['nombre_usuario'];
-    password = json['constraseña'];
+    password =
+        json['constraseña']; // No necesitariamos password para hacer solicitudes get o put/post en otras tablas
     rol = json['rol'];
   }
 
