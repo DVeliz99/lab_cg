@@ -25,27 +25,3 @@ class User {
     };
   }
 }
-
-class UserProfile {
-  final String nombre;
-  final String sexo;
-  final int edad;
-  final double altura;
-  final double peso;
-  final String tipoSangre;
-  final String telefono;
-  final String correo;
-  final String direccion;
-
-  UserProfile({
-    required this.nombre,
-    required this.sexo,
-    required this.edad,
-    required this.altura,
-    required this.peso,
-    required this.tipoSangre,
-    required this.telefono,
-    required this.correo,
-    required this.direccion,
-  });
-}
