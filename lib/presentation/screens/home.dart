@@ -8,8 +8,6 @@ class HomeScreen extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double baseTextSize = screenWidth * 0.03;
 
-
-
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -17,7 +15,7 @@ class HomeScreen extends StatelessWidget {
             return Container(
               width: double.infinity,
               height: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('lib/assets/images/bg.jpg'),
                   fit: BoxFit.cover,
@@ -31,76 +29,41 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      //saludo
+                      // ──────────────────── SALUDO ────────────────────
                       Column(
                         children: [
                           Container(
-                            decoration: BoxDecoration(
-                              // Semi-transparent background
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.transparent),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.transparent,
+                            margin: const EdgeInsets.only(left: 30),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Hola, John',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: baseTextSize * 2.5,
+                                  shadows: const [
+                                    Shadow(
+                                      color: Colors.white,
+                                      offset: Offset(-3, 3),
+                                      blurRadius: 4,
                                     ),
-                                  ),
-                                  width: double.infinity,
-                                  margin: const EdgeInsetsDirectional.only(
-                                    start: 30,
-                                  ),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Hola, John',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize:
-                                            baseTextSize *
-                                            2.5, //tamaño de texto responsivo
-                                        shadows: [
-                                          Shadow(
-                                            color: Colors.white,
-                                            offset: Offset(-3, 3),
-                                            blurRadius: 4,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                  ],
                                 ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-
-                                  child: Center(
-                                    child: Text(
-                                      'Bienvenido a lab CG',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize:
-                                            baseTextSize *
-                                            1.5, // Responsive text size
-                                        shadows: [
-                                          Shadow(
-                                            color: Colors.white,
-                                            offset: Offset(-2, 2),
-                                            blurRadius: 4,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            'Bienvenido a lab CG',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: baseTextSize * 1.5,
+                              shadows: const [
+                                Shadow(
+                                  color: Colors.white,
+                                  offset: Offset(-2, 2),
+                                  blurRadius: 4,
                                 ),
                               ],
                             ),
@@ -108,74 +71,91 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
 
-                      // Botones
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 16),
+                      // ──────────────────── BOTONES ────────────────────
+                      Padding(
+                        padding: const  EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           children: [
+                            // Fila de Servicios e Historial
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
-                                  width: screenWidth * 0.42,
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  margin: EdgeInsets.symmetric(horizontal: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: Colors.black),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.biotech, size: baseTextSize),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Servicios',
-                                        style: TextStyle(
-                                          fontSize: baseTextSize,
-                                          fontWeight: FontWeight.bold,
+                                // ──── Servicios ────
+                                InkWell(
+                                  onTap: () =>
+                                      Navigator.of(context).pushNamed('servicios'),
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Container(
+                                    width: screenWidth * 0.42,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 16),
+                                    margin:
+                                        const EdgeInsets.symmetric(horizontal: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: Colors.black),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.biotech,
+                                            size: baseTextSize * 1.4),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          'Servicios',
+                                          style: TextStyle(
+                                            fontSize: baseTextSize,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                Container(
-                                  width: screenWidth * 0.42,
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  margin: EdgeInsets.symmetric(horizontal: 4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(12),
-                                    border: Border.all(color: Colors.black),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.assignment,
-                                        size: baseTextSize,
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Historial',
-                                        style: TextStyle(
-                                          fontSize: baseTextSize,
-                                          fontWeight: FontWeight.bold,
+
+                                // ──── Historial (Resultados) ────
+                                InkWell(
+                                  onTap: () => Navigator.of(context)
+                                      .pushNamed('resultados'),
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Container(
+                                    width: screenWidth * 0.42,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 16),
+                                    margin:
+                                        const EdgeInsets.symmetric(horizontal: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(color: Colors.black),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.assignment,
+                                            size: baseTextSize * 1.4),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          'Historial',
+                                          style: TextStyle(
+                                            fontSize: baseTextSize,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                            //  Cita
+                            // ───────────────── Próxima Cita ─────────────────
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              padding: EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
@@ -198,11 +178,11 @@ class HomeScreen extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Row(
                                     children: [
-                                      Text('10:30 AM'),
-                                      SizedBox(width: 16),
+                                      const Text('10:30 AM'),
+                                      const SizedBox(width: 16),
                                       Expanded(
                                         child: Text(
                                           'Prueba: Hemograma Completo',
@@ -218,26 +198,25 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
 
-                            // Configuración
-                            SizedBox(height: 20),
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 16),
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: Colors.black),
-                              ),
-                              child: GestureDetector(
-                                onTap: () {
-                                  print('Navigating to settings...');
-                                  Navigator.pushNamed(context, 'settings');
-                                },
+                            // ───────────────── CONFIGURACIÓN ─────────────────
+                            const SizedBox(height: 20),
+                            InkWell(
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed('settings'),
+                              borderRadius: BorderRadius.circular(12),
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(color: Colors.black),
+                                ),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Icon(Icons.settings, size: baseTextSize),
+                                    Icon(Icons.settings,
+                                        size: baseTextSize * 1.4),
                                     Text(
                                       'Configuración',
                                       style: TextStyle(
@@ -245,10 +224,8 @@ class HomeScreen extends StatelessWidget {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      size: baseTextSize,
-                                    ),
+                                    Icon(Icons.arrow_forward,
+                                        size: baseTextSize * 1.4),
                                   ],
                                 ),
                               ),
