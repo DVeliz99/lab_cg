@@ -8,8 +8,6 @@ class HomeScreen extends StatelessWidget {
     final double screenWidth = MediaQuery.of(context).size.width;
     final double baseTextSize = screenWidth * 0.03;
 
-
-
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(

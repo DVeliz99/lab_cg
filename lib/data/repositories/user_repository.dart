@@ -8,5 +8,4 @@ abstract class UserRepository {
   ); // puede servir para el usuario administrador
   Future<void> updateUser(User user);
   Future<void> deleteUser(int id);
-  Future<void> saveUserProfile(UserProfile user);
 }
