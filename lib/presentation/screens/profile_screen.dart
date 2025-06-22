@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/domain/profile.dart';
 import 'package:lab_cg/use_cases/profile_use_cases.dart';
-import 'package:lab_cg/data/data_sources/data_profile.dart';
+import 'package:lab_cg/data/data_sources/profile_data_source.dart';
+import 'package:lab_cg/data/implements/profile_repository_impl.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -22,7 +23,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _emailController = TextEditingController();
   final _addressController = TextEditingController();
 
-  final SaveProfile saveProfile = SaveProfile(DataProfile());
+  final SaveProfile saveProfile = SaveProfile(
+    ProfileRepositoryImpl(ProfileDataSource()),
+  );
 
   void _save() {
     if (_formKey.currentState!.validate()) {
@@ -48,6 +51,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Perfil'),
+        backgroundColor: Colors.white.withOpacity(0.8),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -63,7 +76,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.all(12),
               child: ListView(
                 children: [
-                  _buildAppBar(),
                   _buildTextField("Nombre", _nameController),
                   Row(
                     children: [
@@ -138,33 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        children: const [
-          BackButton(color: Colors.white),
-          SizedBox(width: 8),
-          Text(
-            'Perfil',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              shadows: [
-                Shadow(
-                  offset: Offset(1, 1),
-                  blurRadius: 4,
-                  color: Colors.black45,
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
