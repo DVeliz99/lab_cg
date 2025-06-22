@@ -1,3 +1,9 @@
+## 0.7.1 (2025-06-22)
+
+### Fix
+
+- Corrección de estructura Profile (#15) (#16)
+
 ## 0.7.0 (2025-06-20)
 
 ### Feat
