@@ -1,8 +1,8 @@
 import 'package:lab_cg/domain/service.dart';
 
-abstract class ServiceDataSource {
+abstract class ServiceRepository {
   // Future<void> crearExamen(Service examen);
+  // Future<List<Service>> obtenerExamenes();
   Future<Service> getServiceByUid(String uid);
-  // Future<Service?> obtenerExamenPorUuid(String uuid);
   // Future<void> eliminarExamen(String uuid);
 }
