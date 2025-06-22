@@ -1,11 +1,12 @@
+import 'package:lab_cg/domain/auth.dart';
 import 'package:lab_cg/domain/user.dart';
 
 abstract class UserDataSource {
-  Future<List<User>> getUsers();
-  Future<User?> getUserById(int id);
-  Future<void> createUser(User user);
+  // Future<List<User>> getUsers();
+  Future<AppUser?> getUserByUid(String id);
+  /*Future<void> createUser(User user);
   Future<void> updateUser(User user);
-  Future<void> deleteUser(int id);
+  Future<void> deleteUser(int id);*/
 }
 
 

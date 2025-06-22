@@ -22,16 +22,12 @@ class FirebaseAuthDataSource implements AuthDataSource {
     try {
       final user = _firebaseAuth.currentUser;
       if (user != null) {
-        return Auth(
-          uid: user.uid,
-          nombreUsuario: user.email ?? 'usuario_sin_email',
-          displayname: user.displayName,
-        );
+        return Auth(uid: user.uid, email: user.email ?? '');
       } else {
-        throw Exception('No user signed in');
+        throw Exception('No hay usuario autenticado');
       }
     } catch (e) {
-      throw Exception('Error getting current user: $e');
+      throw Exception('Hubo un error al obtener el usuario autenticado: $e');
     }
   }
 
@@ -42,21 +38,17 @@ class FirebaseAuthDataSource implements AuthDataSource {
         email: email,
         password: password,
       );
+
       final user = userCredential.user;
       if (user != null) {
-        return Auth(
-          uid: user.uid,
-          nombreUsuario: user.email ?? 'usuario_sin_email',
-          displayname: user.displayName,
-        );
+        return Auth(uid: user.uid, email: user.email ?? '');
       } else {
-        throw Exception('Login failed');
+        throw Exception('Login failed: Usuario no encontrado');
       }
     } on FirebaseAuthException catch (e) {
-      // Aquí capturas los errores específicos de autenticación Firebase
       throw Exception('FirebaseAuthException: ${e.message}');
     } catch (e) {
-      throw Exception('Unknown error during login: $e');
+      throw Exception('Error desconocido durante login: $e');
     }
   }
 }
