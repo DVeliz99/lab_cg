@@ -9,7 +9,13 @@ class AgendarCitaScreen extends StatefulWidget {
 }
 
 class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
-  final _types = ['Hemogama Completo', 'COVID', 'PCR', 'Antígeno', 'Anticuerpos'];
+  final _types = [
+    'Hemogama Completo',
+    'COVID',
+    'PCR',
+    'Antígeno',
+    'Anticuerpos',
+  ];
   String? _selectedType;
   DateTime? _selectedDate;
   TimeOfDay _selectedTime = const TimeOfDay(hour: 8, minute: 0);
@@ -60,12 +66,17 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                           isExpanded: true,
                           value: _selectedType,
                           hint: const Text('Seleccionar'),
-                          items: _types
-                              .map((type) => DropdownMenuItem(
-                                  value: type, child: Text(type)))
-                              .toList(),
-                          onChanged: (value) =>
-                              setState(() => _selectedType = value),
+                          items:
+                              _types
+                                  .map(
+                                    (type) => DropdownMenuItem(
+                                      value: type,
+                                      child: Text(type),
+                                    ),
+                                  )
+                                  .toList(),
+                          onChanged:
+                              (value) => setState(() => _selectedType = value),
                           decoration: _inputDecoration(),
                         ),
                         const SizedBox(height: 20),
@@ -81,16 +92,18 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                                   child: Text(
                                     _selectedDate == null
                                         ? 'Seleccionar fecha'
-                                        : _selectedDate
-                                            .toString()
-                                            .split(' ')[0],
+                                        : _selectedDate.toString().split(
+                                          ' ',
+                                        )[0],
                                   ),
                                 ),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                              ),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 border: Border.all(color: Colors.grey),
@@ -101,19 +114,21 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                                 underline: const SizedBox(),
                                 dropdownColor: Colors.white,
                                 style: const TextStyle(color: Colors.black),
-                                items: List.generate(
-                                  24,
-                                  (i) => TimeOfDay(hour: i, minute: 0),
-                                ).map((t) {
-                                  final label =
-                                      '${t.hour.toString().padLeft(2, '0')}:00';
-                                  return DropdownMenuItem(
-                                    value: t,
-                                    child: Text(label),
-                                  );
-                                }).toList(),
-                                onChanged: (value) =>
-                                    setState(() => _selectedTime = value!),
+                                items:
+                                    List.generate(
+                                      24,
+                                      (i) => TimeOfDay(hour: i, minute: 0),
+                                    ).map((t) {
+                                      final label =
+                                          '${t.hour.toString().padLeft(2, '0')}:00';
+                                      return DropdownMenuItem(
+                                        value: t,
+                                        child: Text(label),
+                                      );
+                                    }).toList(),
+                                onChanged:
+                                    (value) =>
+                                        setState(() => _selectedTime = value!),
                               ),
                             ),
                           ],
@@ -142,7 +157,9 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.blue[800],
                                 foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(vertical: 18),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 18,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -206,23 +223,24 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         _direccionController.text.isEmpty ||
         _nombreController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Por favor complete todos los campos.')));
+        const SnackBar(content: Text('Por favor complete todos los campos.')),
+      );
       return;
     }
 
     final cita = CitaLaboratorio(
-      id: DateTime.now().millisecondsSinceEpoch,
       uid: 'user_123',
-      nombrePaciente: _nombreController.text,
-      tipoCita: _selectedType!,
-      fecha: _selectedDate!,
+      uidUser: _nombreController.text,
+      uidService: _selectedType!,
+      requestedAt: _selectedDate!,
       hora: '${_selectedTime.hour.toString().padLeft(2, '0')}:00',
-      direction: _direccionController.text,
-      estado: 'pendiente',
+      address: _direccionController.text,
+      active: true,
     );
 
     //await _useCase(cita)_;
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cita agendada exitosamente.')));
+      const SnackBar(content: Text('Cita agendada exitosamente.')),
+    );
   }
 }

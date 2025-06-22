@@ -1,27 +1,17 @@
-class User {
-  int? id;
-  String? uuid;
-  String? nombreUsuario;
-  String? password;
+class AppUser {
+  String? uid;
+  String? nombre;
   String? rol;
 
-  User({this.id, this.uuid, this.nombreUsuario, this.password, this.rol});
+  AppUser({this.uid, this.nombre, this.rol});
 
-  User.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    uuid = json['uuid'];
-    nombreUsuario = json['nombre_usuario'];
-    password = json['constraseña'];
-    rol = json['rol'];
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(uid: json['uid'], nombre: json['nombre'], rol: json['rol']);
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'uuid': uuid,
-      'nombre_usuario': nombreUsuario,
-      'password': password,
-      'rol': rol,
-    };
+  //Convierte a string la instancia AppUser
+  @override
+  String toString() {
+    return 'AppUser(uid: $uid, nombre: $nombre, rol: $rol)';
   }
 }
