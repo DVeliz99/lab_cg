@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:lab_cg/domain/user.dart';
-import 'package:lab_cg/data/data_sources/local_user_data_source.dart';
-import 'package:lab_cg/use_cases/save_user_profile.dart';
-
+/*
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -225,3 +221,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ).showSnackBar(const SnackBar(content: Text('Perfil guardado')));
   }
 }
+*/

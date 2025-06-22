@@ -1,6 +1,9 @@
+import 'package:lab_cg/domain/auth.dart';
 import 'package:lab_cg/domain/user.dart';
 import 'package:lab_cg/data/repositories/user_repository.dart';
 
+
+/*
 class LocalUserDataSource implements UserRepository {
   @override
   Future<void> createUser(User user) async {}
@@ -9,7 +12,7 @@ class LocalUserDataSource implements UserRepository {
   Future<void> deleteUser(int id) async {}
 
   @override
-  Future<User?> getUserById(int id) async => null;
+  Future<User?> getUserByUid(int id) async => null;
 
   @override
   Future<List<User>> getUsers() async => [];
@@ -21,4 +24,10 @@ class LocalUserDataSource implements UserRepository {
   Future<void> saveUserProfile(UserProfile user) async {
     print('Guardado: ${user.nombre}');
   }
+
+  @override
+  Future<Auth?> getUserById(int id) {
+    throw UnimplementedError();
+  }
 }
+*/

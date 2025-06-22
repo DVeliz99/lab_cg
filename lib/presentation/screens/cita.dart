@@ -229,14 +229,13 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
     }
 
     final cita = CitaLaboratorio(
-      id: DateTime.now().millisecondsSinceEpoch,
       uid: 'user_123',
-      nombrePaciente: _nombreController.text,
-      tipoCita: _selectedType!,
-      fecha: _selectedDate!,
+      uidUser: _nombreController.text,
+      uidService: _selectedType!,
+      requestedAt: _selectedDate!,
       hora: '${_selectedTime.hour.toString().padLeft(2, '0')}:00',
       address: _direccionController.text,
-      estado: 'pendiente',
+      active: true,
     );
 
     //await _useCase(cita)_;

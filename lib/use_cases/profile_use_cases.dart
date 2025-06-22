@@ -6,7 +6,7 @@ class SaveUserProfile {
 
   SaveUserProfile(this.repository);
 
-  Future<void> call(UserProfile user) async {
-    await repository.saveUserProfile(user);
-  }
+  // Future<void> call(UserProfile user) async {
+  //   await repository.saveUserProfile(user);
+  // }
 }

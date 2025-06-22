@@ -1,11 +1,16 @@
 // para inicio de sesión
 
 class Auth {
-  final String uid;
+  String? uid;
   //id_usuario
-  final String nombreUsuario;
+  String email;
+  String? password;
 
-  final String? displayname;
+  Auth({this.uid, required this.email, this.password});
 
-  Auth({required this.uid, required this.nombreUsuario, this.displayname});
+  //Convierte a string la instancia Auth
+  @override
+  String toString() {
+    return 'Auth(uid: $uid, email: $email)';
+  }
 }

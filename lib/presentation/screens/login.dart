@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:lab_cg/data/firebase_data_sources/firebase_auth_data_source.dart';
+import 'package:lab_cg/domain/auth.dart';
+import 'package:lab_cg/use_cases/auth_use_cases.dart';
+import 'package:lab_cg/data/implements/auth_repository_impl.dart';
 
 //
 class Login extends StatefulWidget {
@@ -14,9 +19,27 @@ class _LoginState extends State<Login> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  //modelo auth
+  late Auth auth = Auth(uid: '', email: '', password: '');
+
+  /*Para iniciar sesión*/
+  late final LoginUseCase _loginUseCase;
+
   @override
   void initState() {
     super.initState();
+
+    // Instancia de FirebaseAuth
+    final firebaseAuth = FirebaseAuth.instance;
+
+    // Instancia concreta de data source
+    final authDataSource = FirebaseAuthDataSource(firebaseAuth);
+
+    // Repositorio con la data source
+    final authRepository = AuthRepositoryImpl(authDataSource);
+
+    // Caso de uso con el repositorio
+    _loginUseCase = LoginUseCase(authRepository);
   }
 
   void _goToAppController(BuildContext context) {
@@ -27,15 +50,27 @@ class _LoginState extends State<Login> {
     Navigator.pushNamed(context, 'register');
   }
 
-  void _submitLogin() {
+  void _submitLogin() async {
     if (_formKey.currentState!.validate()) {
-      final email = _emailController.text;
-      final password = _passwordController.text;
+      setState(() {
+        auth.email = _emailController.text.trim();
+        auth.password = _passwordController.text.trim();
+      });
+      final result = await _loginUseCase.call(auth.email, auth.password ?? '');
 
-      print('Email: $email');
-      print('Password: $password');
-
-      _goToAppController(context);
+      if (result.isSuccess) {
+        final user = result.data!;
+        print('Usuario logueado: ${user.email}');
+        _goToAppController(context);
+      } else {
+        final error = result.failure!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Center(child: Text('Usuario o contraseña incorrecto ')),
+          ),
+        );
+        print('El error es ${error.message}');
+      }
     }
   }
 
@@ -117,7 +152,6 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(5),
                           color: Colors.white,
                         ),
-                        padding: EdgeInsets.all(20),
 
                         child: Center(
                           child: SingleChildScrollView(

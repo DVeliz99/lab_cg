@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "633840814710",
+    "project_id": "lab-cg",
+    "storage_bucket": "lab-cg.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633840814710:android:ae983cf91e0caacb3f2d57",
+        "android_client_info": {
+          "package_name": "com.example.lab_cg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIqY0Mk7aovlxUPjsrCFsmyeVGaSho2iI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
