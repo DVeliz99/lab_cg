@@ -1,3 +1,15 @@
+## 0.7.1 (2025-06-22)
+
+### Fix
+
+- Corrección de estructura Profile (#15) (#16)
+
+## 0.7.0 (2025-06-20)
+
+### Feat
+
+- actualización de UI en profile_screen.dart y ajustes en estructura clean architecture (#13)
+
 ## 0.6.0 (2025-06-17)
 
 ### Feat

@@ -1,4 +1,9 @@
-/*
+import 'package:flutter/material.dart';
+import 'package:lab_cg/domain/profile.dart';
+import 'package:lab_cg/use_cases/profile_use_cases.dart';
+import 'package:lab_cg/data/data_sources/profile_data_source.dart';
+import 'package:lab_cg/data/implements/profile_repository_impl.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -7,103 +12,144 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _nombreController = TextEditingController();
-  final _edadController = TextEditingController();
-  final _alturaController = TextEditingController();
-  final _pesoController = TextEditingController();
-  final _telefonoController = TextEditingController();
-  final _correoController = TextEditingController();
-  final _direccionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _gender = ValueNotifier<String>('Masculino');
+  final _ageController = TextEditingController();
+  final _heightController = TextEditingController();
+  final _weightController = TextEditingController();
+  final _bloodType = ValueNotifier<String>('A+');
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _addressController = TextEditingController();
 
-  String _sexo = 'Masculino';
-  String _tipoSangre = 'A+';
+  final SaveProfile saveProfile = SaveProfile(
+    ProfileRepositoryImpl(ProfileDataSource()),
+  );
 
-  final _saveUserProfile = SaveUserProfile(LocalUserDataSource());
+  void _save() {
+    if (_formKey.currentState!.validate()) {
+      final profile = Profile(
+        name: _nameController.text,
+        gender: _gender.value,
+        age: int.parse(_ageController.text),
+        height: double.parse(_heightController.text),
+        weight: double.parse(_weightController.text),
+        bloodType: _bloodType.value,
+        phone: _phoneController.text,
+        email: _emailController.text,
+        address: _addressController.text,
+      );
+
+      saveProfile(profile);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Perfil guardado exitosamente")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Perfil')),
-      body: Stack(
-        children: [
-          // Fondo con imagen
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/images/bg.jpg'),
-                fit: BoxFit.cover,
+      appBar: AppBar(
+        title: const Text('Perfil'),
+        backgroundColor: Colors.white.withOpacity(0.8),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          ),
+        ),
+        child: SafeArea(
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: ListView(
+                children: [
+                  _buildTextField("Nombre", _nameController),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildDropdown("Sexo", _gender, [
+                          "Masculino",
+                          "Femenino",
+                        ]),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildTextField(
+                          "Edad",
+                          _ageController,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildTextField(
+                          "Altura",
+                          _heightController,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildTextField(
+                          "Peso",
+                          _weightController,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ),
+                    ],
+                  ),
+                  _buildDropdown("Tipo de sangre", _bloodType, [
+                    "A+",
+                    "A-",
+                    "B+",
+                    "B-",
+                    "AB+",
+                    "AB-",
+                    "O+",
+                    "O-",
+                  ]),
+                  _buildTextField(
+                    "Teléfono",
+                    _phoneController,
+                    keyboardType: TextInputType.phone,
+                  ),
+                  _buildTextField(
+                    "Correo",
+                    _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  _buildTextField("Dirección", _addressController),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _save,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    child: const Text('Guardar'),
+                  ),
+                ],
               ),
             ),
           ),
-
-          // Capa oscura semitransparente
-          Container(color: Colors.black.withAlpha(153)),
-
-          // Contenido encima
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: [
-                _buildTextField('Nombre', _nombreController),
-                Row(
-                  children: [
-                    Expanded(child: _buildDropdownSexo()),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildTextField(
-                        'Edad',
-                        _edadController,
-                        isNumber: true,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildTextField(
-                        'Altura',
-                        _alturaController,
-                        isDecimal: true,
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: _buildTextField(
-                        'Peso',
-                        _pesoController,
-                        isDecimal: true,
-                      ),
-                    ),
-                  ],
-                ),
-                _buildDropdownSangre(),
-                _buildTextField(
-                  'Teléfono',
-                  _telefonoController,
-                  isNumber: true,
-                ),
-                _buildTextField('Correo', _correoController),
-                _buildTextField('Dirección', _direccionController),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    ElevatedButton.icon(
-                      icon: const Icon(Icons.arrow_back),
-                      label: const Text(''),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: _guardarPerfil,
-                      child: const Text('Guardar Perfil'),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -111,114 +157,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildTextField(
     String label,
     TextEditingController controller, {
-    bool isNumber = false,
-    bool isDecimal = false,
+    TextInputType? keyboardType,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
-        keyboardType:
-            isDecimal
-                ? const TextInputType.numberWithOptions(decimal: true)
-                : (isNumber ? TextInputType.number : TextInputType.text),
+        keyboardType: keyboardType,
         decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white, // fondo blanco del campo
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.black),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.blue, width: 2),
-          ),
-          border: const OutlineInputBorder(),
-        ),
-        style: const TextStyle(color: Colors.black),
-      ),
-    );
-  }
-
-  Widget _buildDropdownSexo() {
-    return DropdownButtonFormField<String>(
-      value: _sexo,
-      items:
-          [
-            'Masculino',
-            'Femenino',
-            'Otro',
-          ].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
-      onChanged: (val) => setState(() => _sexo = val!),
-      style: const TextStyle(color: Colors.black),
-      dropdownColor: Colors.white,
-      decoration: const InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        labelText: 'Sexo', // o 'Tipo de sangre'
-        labelStyle: TextStyle(
-          color: Colors.black,
-        ), // <-- aquí forzamos texto visible
-        border: OutlineInputBorder(),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDropdownSangre() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: DropdownButtonFormField<String>(
-        value: _tipoSangre,
-        items:
-            [
-              'A+',
-              'A-',
-              'B+',
-              'B-',
-              'AB+',
-              'AB-',
-              'O+',
-              'O-',
-            ].map((t) => DropdownMenuItem(value: t, child: Text(t))).toList(),
-        onChanged: (val) => setState(() => _tipoSangre = val!),
-        style: const TextStyle(color: Colors.black),
-        dropdownColor: Colors.white,
-        decoration: const InputDecoration(
           filled: true,
           fillColor: Colors.white,
-          labelText: 'Tipo de Sangre', // o 'Tipo de sangre'
-          labelStyle: TextStyle(
-            color: Colors.black,
-          ), // <-- aquí forzamos texto visible
-          border: OutlineInputBorder(),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black),
-          ),
         ),
+        validator:
+            (value) =>
+                value == null || value.isEmpty ? 'Campo requerido' : null,
       ),
     );
   }
 
-  void _guardarPerfil() {
-    final perfil = UserProfile(
-      nombre: _nombreController.text,
-      sexo: _sexo,
-      edad: int.tryParse(_edadController.text) ?? 0,
-      altura: double.tryParse(_alturaController.text) ?? 0.0,
-      peso: double.tryParse(_pesoController.text) ?? 0.0,
-      tipoSangre: _tipoSangre,
-      telefono: _telefonoController.text,
-      correo: _correoController.text,
-      direccion: _direccionController.text,
+  Widget _buildDropdown(
+    String label,
+    ValueNotifier<String> value,
+    List<String> options,
+  ) {
+    return ValueListenableBuilder(
+      valueListenable: value,
+      builder:
+          (_, current, __) => DropdownButtonFormField<String>(
+            value: current,
+            items:
+                options
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
+            onChanged: (val) => value.value = val!,
+            decoration: InputDecoration(
+              labelText: label,
+              filled: true,
+              fillColor: Colors.white,
+            ),
+          ),
     );
-
-    _saveUserProfile(perfil);
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Perfil guardado')));
   }
 }
-*/

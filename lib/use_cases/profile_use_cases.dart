@@ -1,12 +1,12 @@
-import 'package:lab_cg/domain/user.dart';
-import 'package:lab_cg/data/repositories/user_repository.dart';
+import 'package:lab_cg/domain/profile.dart';
+import 'package:lab_cg/data/repositories/profile_repository.dart';
 
-class SaveUserProfile {
-  final UserRepository repository;
+class SaveProfile {
+  final ProfileRepository repository;
 
-  SaveUserProfile(this.repository);
+  SaveProfile(this.repository);
 
-  // Future<void> call(UserProfile user) async {
-  //   await repository.saveUserProfile(user);
-  // }
+  Future<void> call(Profile profile) async {
+    await repository.saveProfile(profile);
+  }
 }
