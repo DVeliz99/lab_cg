@@ -4,6 +4,7 @@ import 'package:lab_cg/presentation/screens/settings.dart';
 import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
+import 'package:lab_cg/presentation/screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         "app-controller": (context) => PopUpMenu(),
         "settings": (context) => SettingsScreen(),
         "agendar-cita": (context) => const AgendarCitaScreen(),
-        // "profile": (context) => const ProfileScreen(),
+        "profile": (context) => const ProfileScreen(),
       },
     );
   }
