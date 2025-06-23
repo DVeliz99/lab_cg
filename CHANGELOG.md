@@ -1,3 +1,9 @@
+## 0.9.0 (2025-06-23)
+
+### Feat
+
+- **profile**: integración con Firebase para cargar y guardar datos del perfil (#18)
+
 ## 0.8.0 (2025-06-22)
 
 ## 0.7.1 (2025-06-22)
