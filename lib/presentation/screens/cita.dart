@@ -16,11 +16,49 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
   final _direccionController = TextEditingController();
   final _nombreController = TextEditingController();
 
-  //final AgendarCita _useCase = AgendarCita(LocalCitaDataSource());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        title: const Text(
+          'Agendar',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.normal, // sin negrita
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'settings'); // o 'home'
+              },
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: const Text(
+                'Home',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -37,7 +75,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
             const Text(
               'Agendar Cita',
               style: TextStyle(
-                fontSize: 32, // aumentado
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -172,7 +210,7 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       title,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
-        fontSize: 17, // aumentado
+        fontSize: 17,
         color: Colors.white,
       ),
     );
@@ -206,7 +244,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
         _direccionController.text.isEmpty ||
         _nombreController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Por favor complete todos los campos.')));
+        const SnackBar(content: Text('Por favor complete todos los campos.')),
+      );
       return;
     }
 
@@ -221,8 +260,8 @@ class _AgendarCitaScreenState extends State<AgendarCitaScreen> {
       estado: 'pendiente',
     );
 
-    //await _useCase(cita)_;
     ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cita agendada exitosamente.')));
+      const SnackBar(content: Text('Cita agendada exitosamente.')),
+    );
   }
 }
