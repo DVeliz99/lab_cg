@@ -5,6 +5,7 @@ import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 import 'package:lab_cg/presentation/screens/profile.dart';
+import 'package:lab_cg/presentation/screens/resultados.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,17 +19,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+    title: 'Flutter Demo',
+    theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+     ),
+
+
       initialRoute: 'init',
+
       routes: {
-        "init": (context) => Login(),
-        "app-controller": (context) => PopUpMenu(),
-        "settings": (context) => SettingsScreen(),
-        "agendar-cita": (context) => const AgendarCitaScreen(),
+       "init": (context) => Login(),
+       "app-controller": (context) => PopUpMenu(),
+       "settings": (context) => SettingsScreen(),
+       "agendar-cita": (context) => const AgendarCitaScreen(),
         "profile": (context) => const ProfileScreen(),
+        "result": (context) => const ResultadosScreen(),
       },
     );
   }
@@ -39,3 +44,4 @@ class MyApp extends StatelessWidget {
   final dataSource = FirebaseUserDataSource(firestore: firestore);
   final repository = UserRepositoryImpl(dataSource: dataSource);
    */
+
