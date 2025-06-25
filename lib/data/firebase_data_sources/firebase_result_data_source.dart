@@ -58,12 +58,12 @@ class FirebaseResultDataSource implements ResultDataSource {
 
 
 
-/*un metodo para obtener el resultado, un metodo para obtener los valores de set_value de la 
+/*un metodo para obtener el resultado, un metodo para obtener los valores de set_value de la
 coleccion parametros.
 Una consulta que con el uid obtenido de la pantalla historial se obtenga el resultado (metodo)
-obteniendo el resultado de firebase se obtiene tambien el uid del servicio con el que se va a obtener 
-el nombre del servicio, el resultado obtenido de firebase contiene el uid de los parametos junto con 
-sus valores y los uid de los parametros seran utilizados para obtener los valores set_value de cada 
+obteniendo el resultado de firebase se obtiene tambien el uid del servicio con el que se va a obtener
+el nombre del servicio, el resultado obtenido de firebase contiene el uid de los parametos junto con
+sus valores y los uid de los parametros seran utilizados para obtener los valores set_value de cada
 parametro
 
  */
