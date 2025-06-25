@@ -1,3 +1,9 @@
+## 0.12.0 (2025-06-25)
+
+### Feat
+
+- agregar pantalla de resultados con integración a Firebase (#21)
+
 ## 0.11.0 (2025-06-25)
 
 ### Feat
