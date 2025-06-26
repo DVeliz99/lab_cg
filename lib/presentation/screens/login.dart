@@ -25,6 +25,9 @@ class _LoginState extends State<Login> {
   /*Para iniciar sesión*/
   late final LoginUseCase _loginUseCase;
 
+  /*Para desloguearse */
+  late final LogoutUseCase _logoutUseCase;
+
   @override
   void initState() {
     super.initState();

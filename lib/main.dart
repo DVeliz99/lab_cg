@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/core/firebase_config.dart';
+import 'package:lab_cg/presentation/screens/resultados.dart';
 import 'package:lab_cg/presentation/screens/settings.dart';
 import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         "settings": (context) => SettingsScreen(),
         "agendar-cita": (context) => const AgendarCitaScreen(),
         "profile": (context) => const ProfileScreen(),
+        "results": (context) => const ResultadosScreen(),
       },
     );
   }

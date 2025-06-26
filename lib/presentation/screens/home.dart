@@ -119,6 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
+    void _goToAppController(BuildContext context) {
+      Navigator.pushNamed(context, 'app-controller');
+    }
+
     // Inicializar localización para fechas
     await initializeDateFormatting('es_ES', null);
 
