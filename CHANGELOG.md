@@ -1,3 +1,9 @@
+## 0.13.0 (2025-06-26)
+
+### Fix
+
+- Corregir resultados y implementar comunicación entre componentes (#22)
+
 ## 0.12.0 (2025-06-25)
 
 ### Feat
