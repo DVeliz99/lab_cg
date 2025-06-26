@@ -1,6 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lab_cg/data/firebase_data_sources/firebase_auth_data_source.dart';
+import 'package:lab_cg/data/firebase_data_sources/firebase_user_data_source.dart';
+import 'package:lab_cg/data/implements/auth_repository_impl.dart';
+import 'package:lab_cg/data/implements/user_repository_impl.dart';
+import 'package:lab_cg/domain/auth.dart';
+import 'package:lab_cg/domain/user.dart';
 import 'package:lab_cg/presentation/widgets/toggle.dart';
 import 'package:lab_cg/presentation/widgets/divider.dart';
+import 'package:lab_cg/use_cases/auth_use_cases.dart';
+import 'package:lab_cg/use_cases/user_use_cases.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -14,11 +24,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool llamadas = false;
   bool mensajes = false;
   bool mostrarSubOpciones = false;
+  String? currentUserUid;
+
+  //Tipo modelos
+  Auth? authUser;
+  AppUser? currentUserAuthenticated;
+  AppUser? currentUserData;
+
+  //Casos de uso
+  late final GetUserByUidUseCase _getUserByUid;
+  late final GetCurrentUserUseCase _getCurrentUser;
+  late final SetNotificationUseCase _setNotifications;
+  late final SetContactMethodUseCase _setContactMethod;
 
   @override
   void initState() {
     super.initState();
-    cargarValores(); // Simula cargar desde base de datos
+
+    _initGetCurrentUserUseCase();
+    _initGetUserByUidUseCase();
+    _initSetNotificationUseCase();
+    _initSetContactMethodUseCase();
+    Future.microtask(() async {
+      //segura obtener el usuario antes de cargar valores
+      await _getCurrentUserUidLoggedIn();
+      await cargarValores();
+    });
+  }
+
+  void _initGetUserByUidUseCase() {
+    final userDataSource = FirebaseUserDataSource();
+    final userRepository = UserRepositoryImpl(userDataSource);
+    _getUserByUid = GetUserByUidUseCase(userRepository);
+  }
+
+  void _initSetNotificationUseCase() {
+    final userDataSource = FirebaseUserDataSource();
+    final userRepository = UserRepositoryImpl(userDataSource);
+    _setNotifications = SetNotificationUseCase(userRepository);
+  }
+
+  void _initSetContactMethodUseCase() {
+    final userDataSource = FirebaseUserDataSource();
+    final userRepository = UserRepositoryImpl(userDataSource);
+    _setContactMethod = SetContactMethodUseCase(userRepository);
+  }
+
+  void _initGetCurrentUserUseCase() async {
+    // Instancia de FirebaseAuth
+    final firebaseAuth = FirebaseAuth.instance;
+
+    // Instancia concreta de data source
+    final authDataSource = FirebaseAuthDataSource(firebaseAuth);
+
+    // Repositorio con la data source
+    final authRepository = AuthRepositoryImpl(authDataSource);
+
+    _getCurrentUser = GetCurrentUserUseCase(authRepository);
   }
 
   void _goToAppController(BuildContext context) {
@@ -29,18 +91,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Navigator.pushNamed(context, 'profile');
   }
 
+  Future<void> openPrivacyWeb() async {
+    final Uri url = Uri.parse('https://privacyanddataprocessing.netlify.app/');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'No se pudo abrir la URL: $url';
+    }
+  }
+
   Future<void> cargarValores() async {
+    final result = await _getUserByUid.call(currentUserUid!);
+    if (result.isSuccess) {
+      currentUserData = result.data;
+    } else {
+      print('Error fetching user data: ${result.failure?.message}');
+    }
     await Future.delayed(const Duration(milliseconds: 300));
     setState(() {
-      notificaciones = true;
-      llamadas = true;
-      mensajes = false;
+      notificaciones = currentUserData?.notifications ?? false;
+      llamadas = currentUserData?.contactMethod == 'phone' ? true : false;
+      mensajes = currentUserData?.contactMethod == 'messages' ? true : false;
     });
   }
 
-  Future<void> guardarEnBaseDeDatos(String tipo, bool valor) async {
-    print('Guardando $tipo: $valor en base de datos...');
-    await Future.delayed(const Duration(milliseconds: 500));
+  Future<String> _getCurrentUserUidLoggedIn() async {
+    final result = await _getCurrentUser.call();
+    if (result.isSuccess) {
+      setState(() {
+        currentUserUid = result.data!.uid;
+        authUser = result.data!;
+      });
+
+      print('El usuario autenticado actualmente es: $authUser');
+
+      return currentUserUid ?? 'No se encontró el usuario';
+    } else {
+      return 'Fallo al obtener usuario: ${result.failure?.message}';
+    }
+  }
+
+  Future<void> setNotification(bool valor) async {
+    if (currentUserUid == null) {
+      print('Error: UID del usuario es null.');
+      return;
+    }
+
+    try {
+      print(
+        'Enviando valor "$valor" a la colección users para el usuario $currentUserUid...',
+      );
+      await _setNotifications.call(currentUserUid!, valor);
+      print('Notificación actualizada correctamente.');
+    } catch (e) {
+      print('Error al actualizar la notificación: $e');
+    }
+  }
+
+  Future<void> setContactMethod(String contactMethod) async {
+    if (!mensajes && !llamadas) {
+      if (currentUserUid == null) {
+        print('Error: UID del usuario es null.');
+        return;
+      }
+
+      try {
+        print(
+          'Enviando metodo de contacto "$contactMethod" a la colección users para el usuario $currentUserUid...',
+        );
+        await _setContactMethod.call(currentUserUid!, 'none');
+        print('metodo de contacto actualizado correctamente a none.');
+      } catch (e) {
+        print('Error al actualizar el metodo de contacto: $e');
+      }
+    } else {
+      if (currentUserUid == null) {
+        print('Error: UID del usuario es null.');
+        return;
+      }
+
+      try {
+        print(
+          'Enviando metodo de contacto "$contactMethod" a la colección users para el usuario $currentUserUid...',
+        );
+        await _setContactMethod.call(currentUserUid!, contactMethod);
+        print('metodo de contacto actualizado correctamente.');
+      } catch (e) {
+        print('Error al actualizar el metodo de contacto: $e');
+      }
+    }
   }
 
   @override
@@ -199,10 +339,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                             setState(() {
                                               notificaciones = nuevo;
                                             });
-                                            await guardarEnBaseDeDatos(
-                                              'notificaciones',
-                                              nuevo,
-                                            );
+                                            await setNotification(nuevo);
                                           },
                                         ),
                                       ],
@@ -263,7 +400,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               const Text(
-                                                'Llamadas',
+                                                'llamadas',
                                                 style: TextStyle(fontSize: 20),
                                               ),
                                               ToggleIcon(
@@ -272,10 +409,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   final nuevo = !llamadas;
                                                   setState(() {
                                                     llamadas = nuevo;
+                                                    mensajes = false;
                                                   });
-                                                  await guardarEnBaseDeDatos(
-                                                    'llamadas',
-                                                    nuevo,
+                                                  await setContactMethod(
+                                                    'phone',
                                                   );
                                                 },
                                               ),
@@ -296,10 +433,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                                   final nuevo = !mensajes;
                                                   setState(() {
                                                     mensajes = nuevo;
+                                                    llamadas = false;
                                                   });
-                                                  await guardarEnBaseDeDatos(
-                                                    'mensajes',
-                                                    nuevo,
+                                                  await setContactMethod(
+                                                    'messages',
                                                   );
                                                 },
                                               ),
@@ -312,24 +449,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const CustomDivider(),
 
                                   // Acerca de
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.info, size: 40),
-                                        SizedBox(width: 12),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 11),
-                                          child: Text(
-                                            'Acerca de',
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
+                                  GestureDetector(
+                                    onTap:
+                                        openPrivacyWeb, // 👉 Llama a tu función cuando se toca
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.info, size: 40),
+                                          SizedBox(width: 12),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 11),
+                                            child: Text(
+                                              'Acerca de',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],

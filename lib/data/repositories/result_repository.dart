@@ -1,7 +1,5 @@
 import 'package:lab_cg/domain/result.dart';
 
 abstract class ResultRepository {
-  Future<Result?> getResultByUserUid(String uid);
+  Future<Result?> getResultbyCitaUid(String citaUid);
 }
-
-

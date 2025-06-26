@@ -1,4 +1,3 @@
-import 'package:lab_cg/domain/auth.dart';
 import 'package:lab_cg/domain/user.dart';
 
 abstract class UserDataSource {
@@ -7,6 +6,8 @@ abstract class UserDataSource {
   /*Future<void> createUser(User user);
   Future<void> updateUser(User user);
   Future<void> deleteUser(int id);*/
+  Future<AppUser> setNotification(String uid, bool value);
+  Future<AppUser> setContactMethod(String uid, String contactMethod);
 }
 
 

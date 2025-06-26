@@ -7,48 +7,49 @@ class FirebaseResultDataSource implements ResultDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<Result?> getResultByUserUid(String uid) async {
+  Future<Result?> getResultbyCitaUid(String citaUid) async {
+    print('El cita uid es $citaUid para hacer consulta');
     try {
-      final querySnapshot = await _firestore
-          .collection('results')
-          .where('uid_user', isEqualTo: uid)
-          .limit(1)
-          .get();
+      final docSnapshot =
+          await _firestore.collection('results').doc(citaUid).get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        final doc = querySnapshot.docs.first;
-        print("📄 Resultado obtenido: ${doc.data()}");
-        return Result.fromMap(doc.data(), doc.id);
+      if (docSnapshot.exists) {
+        print("📄 Resultado obtenido: ${docSnapshot.data()}");
+        return Result.fromMap(docSnapshot.data()!, docSnapshot.id);
       } else {
-        print("⚠️ No se encontró resultado con uid_user: $uid");
+        print("⚠️ No se encontró resultado con citaUid: $citaUid");
         return null;
       }
     } catch (e) {
-      print('❌ Error al obtener resultado por UID: $e');
+      print('❌ Error al obtener resultado por citaUid: $e');
       return null;
     }
   }
 
   @override
-  Future<List<ParameterResult>> getSubcollectionParameters(
-      String resultUid, String serviceUid) async {
+  Future<List<dynamic>> getSubcollectionParameters(
+    String resultUid,
+    String serviceUid,
+  ) async {
+    print('uid_service para consultar en firebase $serviceUid');
+    print('resultUid para consultar en firebase $resultUid');
     try {
-      final snapshot = await _firestore
-          .collection('results')
-          .doc(resultUid)
-          .collection(serviceUid)
-          .doc(resultUid)
-          .collection('parametros')
-          .get();
+      final snapshot =
+          await _firestore
+              .collection('results')
+              .doc(resultUid)
+              .collection(serviceUid)
+              .get();
 
-      print("📥 Parámetros encontrados: ${snapshot.docs.length}");
-      for (var doc in snapshot.docs) {
-        print("📄 Param: ${doc.data()}");
-      }
+      final entries =
+          snapshot.docs.map((doc) {
+            final data = doc.data();
+            return {'id': doc.id, 'value': data['value']};
+          }).toList();
 
-      return snapshot.docs
-          .map((doc) => ParameterResult.fromMap(doc.data()))
-          .toList();
+      print('entries $entries');
+
+      return entries;
     } catch (e) {
       print('❌ Error al obtener parámetros de la subcolección: $e');
       return [];

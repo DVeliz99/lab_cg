@@ -1,6 +1,6 @@
 class ParameterResult {
   final String nombre;
-  final List<double> setValue;
+  final List<String> setValue;
   final String? unidades;
   final String? valorReferencia;
 
@@ -14,10 +14,14 @@ class ParameterResult {
   factory ParameterResult.fromMap(Map<String, dynamic> map) {
     return ParameterResult(
       nombre: map['name'] ?? '',
-      setValue: List<double>.from((map['set_value'] ?? []).map((e) => e.toDouble())),
+      setValue: List<String>.from(map['set_value'] ?? []),
       unidades: map['unidades'],
       valorReferencia: map['valor_referencia'],
     );
   }
-}
 
+  @override
+  String toString() {
+    return 'ParameterResult(nombre: $nombre, setValue: $setValue, unidades: $unidades, valorReferencia: $valorReferencia)';
+  }
+}

@@ -22,13 +22,19 @@ class Result {
       uid: uid,
       uidUser: map['uid_user'] ?? '',
       uidService: map['uid_service'] ?? '',
-      createdAt: map['created_at'] != null
-          ? (map['created_at'] is Timestamp
-              ? (map['created_at'] as Timestamp).toDate()
-              : DateTime.tryParse(map['created_at']))
-          : null,
+      createdAt:
+          map['created_at'] != null
+              ? (map['created_at'] is Timestamp
+                  ? (map['created_at'] as Timestamp).toDate()
+                  : DateTime.tryParse(map['created_at']))
+              : null,
       comment: map['comments'] ?? '', // ✅ CAMBIO AQUÍ: ahora lee 'comments'
       paramUids: List<String>.from(map['param_uids'] ?? []),
     );
+  }
+
+  @override
+  String toString() {
+    return 'Result(uid: $uid, uidService: $uidService, createdAt: $createdAt, comment: $comment)';
   }
 }

@@ -8,7 +8,7 @@ class ResultRepositoryImpl implements ResultRepository {
   ResultRepositoryImpl(this.dataSource);
 
   @override
-  Future<Result?> getResultByUserUid(String uid) {
-    return dataSource.getResultByUserUid(uid);
+  Future<Result?> getResultbyCitaUid(String uid) {
+    return dataSource.getResultbyCitaUid(uid);
   }
 }
