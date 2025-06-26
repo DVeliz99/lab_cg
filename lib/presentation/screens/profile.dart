@@ -3,6 +3,8 @@ import 'package:lab_cg/domain/profile.dart';
 import 'package:lab_cg/data/implements/profile_repository_impl.dart';
 import 'package:lab_cg/data/firebase_data_sources/firebase_profile_data_source.dart';
 import 'package:lab_cg/use_cases/profile_use_cases.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -44,7 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (!mounted) return;
 
-    // Check if it's a success
     if (result.isSuccess && result.data != null) {
       final profile = result.data as Profile;
 
@@ -83,6 +84,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 
       await saveProfile(profile);
+
+      // 🔁 También actualizar el nombre en la colección 'users'
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'nombre': _nameController.text,
+      });
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Perfil guardado exitosamente")),
@@ -125,6 +133,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.all(12),
                       child: ListView(
                         children: [
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Editar Usuario',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  shadows: [
+                                    const Shadow(
+                                      color: Colors.white,
+                                      offset: Offset(-2, 2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           _buildTextField("Nombre", _nameController),
                           Row(
                             children: [
@@ -148,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: [
                               Expanded(
                                 child: _buildTextField(
-                                  "Altura",
+                                  "Altura (Metros)",
                                   _heightController,
                                   keyboardType: TextInputType.number,
                                 ),
@@ -156,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(width: 12),
                               Expanded(
                                 child: _buildTextField(
-                                  "Peso",
+                                  "Peso (Libras)",
                                   _weightController,
                                   keyboardType: TextInputType.number,
                                 ),

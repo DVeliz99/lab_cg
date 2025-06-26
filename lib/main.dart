@@ -10,11 +10,15 @@ import 'package:lab_cg/presentation/widgets/no_appointments.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 import 'package:lab_cg/presentation/screens/profile.dart';
+<<<<<<< HEAD
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+=======
+import 'package:lab_cg/presentation/screens/resultados.dart';
+>>>>>>> ef940661f022c03b9b9c96e6703ff45ebe0321b9
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+<<<<<<< HEAD
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -55,13 +60,23 @@ class MyApp extends StatelessWidget {
         Locale('es', 'ES'), // Español
         Locale('en', 'US'), // Inglés (puedes quitarlo si no lo usas)
       ],
+=======
+    title: 'Flutter Demo',
+    theme: ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+     ),
+
+
+>>>>>>> ef940661f022c03b9b9c96e6703ff45ebe0321b9
       initialRoute: 'init',
+
       routes: {
-        "init": (context) => Login(),
-        "app-controller": (context) => PopUpMenu(),
-        "settings": (context) => SettingsScreen(),
-        "agendar-cita": (context) => const AgendarCitaScreen(),
+       "init": (context) => Login(),
+       "app-controller": (context) => PopUpMenu(),
+       "settings": (context) => SettingsScreen(),
+       "agendar-cita": (context) => const AgendarCitaScreen(),
         "profile": (context) => const ProfileScreen(),
+<<<<<<< HEAD
         "services": (context) => const ServicesScreen(),
         "appoinment": (context) => const AgendarCitaScreen(),
         "history": (context) => const HistoryScreen(),
@@ -73,6 +88,9 @@ class MyApp extends StatelessWidget {
 
           return ResultadosScreen(citaUid: args);
         },
+=======
+        "result": (context) => const ResultadosScreen(),
+>>>>>>> ef940661f022c03b9b9c96e6703ff45ebe0321b9
       },
     );
   }
@@ -92,3 +110,4 @@ void listarIdsEnApp() async {
   final dataSource = FirebaseUserDataSource(firestore: firestore);
   final repository = UserRepositoryImpl(dataSource: dataSource);
    */
+

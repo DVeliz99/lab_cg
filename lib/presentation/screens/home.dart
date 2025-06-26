@@ -19,6 +19,8 @@ import 'package:lab_cg/use_cases/user_use_cases.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart'; //inicializar localizaciones
 
+
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -513,3 +515,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+

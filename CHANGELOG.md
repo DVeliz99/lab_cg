@@ -1,3 +1,17 @@
+## 0.12.0 (2025-06-25)
+
+### Feat
+
+- agregar pantalla de resultados con integración a Firebase (#21)
+
+## 0.11.0 (2025-06-25)
+
+### Feat
+
+- **profile**: sincroniza nombre en colección users de Firebase (#19)
+
+## 0.10.0 (2025-06-24)
+
 ## 0.9.0 (2025-06-23)
 
 ### Feat
