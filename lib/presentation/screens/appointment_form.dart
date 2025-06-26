@@ -103,7 +103,12 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
       _selectedTime!.minute,
     );
 
-    await FirebaseFirestore.instance.collection('appointments').add({
+    // Crear referencia con ID automático
+    final docRef = FirebaseFirestore.instance.collection('appoinments').doc();
+    final docId = docRef.id;
+
+    await docRef.set({
+      'uid': docId, // Agregamos el ID como campo
       'uid_user': user.uid,
       'uid_service': widget.service.uid,
       'service_name': widget.service.name,

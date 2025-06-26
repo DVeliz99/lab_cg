@@ -13,11 +13,12 @@ class AppointmentHistoryScreen extends StatelessWidget {
       return const Scaffold(body: Center(child: Text('Debes iniciar sesión')));
     }
 
-    final citasStream = FirebaseFirestore.instance
-        .collection('appointments')
-        .where('uid_user', isEqualTo: user.uid)
-        .orderBy('start_at', descending: true)
-        .snapshots();
+    final citasStream =
+        FirebaseFirestore.instance
+            .collection('appoinments')
+            .where('uid_user', isEqualTo: user.uid)
+            .orderBy('start_at', descending: true)
+            .snapshots();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Historial de citas')),
@@ -47,10 +48,13 @@ class AppointmentHistoryScreen extends StatelessWidget {
               return ListTile(
                 leading: const Icon(Icons.schedule),
                 title: Text(serviceName),
-                subtitle:
-                    Text(DateFormat('yyyy-MM-dd ‧ HH:mm').format(startAt)),
-                trailing: const Icon(Icons.hourglass_bottom,
-                    color: Colors.orangeAccent),
+                subtitle: Text(
+                  DateFormat('yyyy-MM-dd ‧ HH:mm').format(startAt),
+                ),
+                trailing: const Icon(
+                  Icons.hourglass_bottom,
+                  color: Colors.orangeAccent,
+                ),
                 onTap: () async {
                   final resultId = await _findResultId(
                     uidUser: user.uid,
@@ -75,13 +79,14 @@ class AppointmentHistoryScreen extends StatelessWidget {
     required String uidUser,
     required String uidService,
   }) async {
-    final snap = await FirebaseFirestore.instance
-        .collection('results')
-        .where('uid_user', isEqualTo: uidUser)
-        .where('uid_service', isEqualTo: uidService)
-        .orderBy('created_at', descending: true)
-        .limit(1)
-        .get();
+    final snap =
+        await FirebaseFirestore.instance
+            .collection('results')
+            .where('uid_user', isEqualTo: uidUser)
+            .where('uid_service', isEqualTo: uidService)
+            .orderBy('created_at', descending: true)
+            .limit(1)
+            .get();
 
     if (snap.docs.isEmpty) return null;
     return snap.docs.first.id;

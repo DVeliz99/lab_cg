@@ -1,28 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:lab_cg/data/firebase_data_sources/firebase_auth_data_source.dart';
+
 import 'package:lab_cg/data/firebase_data_sources/firebase_user_data_source.dart';
 import 'package:lab_cg/data/firebase_data_sources/firebase_result_data_source.dart';
 import 'package:lab_cg/data/firebase_data_sources/firebase_service_data_source.dart';
 
 import 'package:lab_cg/data/implements/auth_repository_impl.dart';
+
 import 'package:lab_cg/data/implements/user_repository_impl.dart';
 import 'package:lab_cg/data/implements/result_repository_impl.dart';
 import 'package:lab_cg/data/implements/service_repository_impl.dart';
+import 'package:lab_cg/data/parametters_data.dart';
+
+import 'package:lab_cg/domain/fullParameterData.dart';
+import 'package:lab_cg/domain/parameter.dart';
 
 import 'package:lab_cg/domain/user.dart';
 import 'package:lab_cg/domain/result.dart';
 import 'package:lab_cg/domain/service.dart';
 import 'package:lab_cg/domain/parameter_result.dart';
+import 'package:lab_cg/presentation/widgets/no_appointments.dart';
 
 import 'package:lab_cg/use_cases/auth_use_cases.dart';
+
 import 'package:lab_cg/use_cases/user_use_cases.dart';
 import 'package:lab_cg/use_cases/result_use_cases.dart';
 import 'package:lab_cg/use_cases/service_use_cases.dart';
 
 class ResultadosScreen extends StatefulWidget {
-  const ResultadosScreen({super.key});
+  final String citaUid;
+
+  const ResultadosScreen({super.key, required this.citaUid});
 
   @override
   State<ResultadosScreen> createState() => _ResultadosScreenState();
@@ -30,14 +41,17 @@ class ResultadosScreen extends StatefulWidget {
 
 class _ResultadosScreenState extends State<ResultadosScreen> {
   bool _isLoading = true;
+  bool _showLoadingBeforeError = true;
   AppUser? currentUser;
   Result? result;
   Service? service;
   List<ParameterResult> parameters = [];
+  late List<dynamic> paramsValue;
+  List<FullParameterData> fullParameterData = [];
 
   late final GetCurrentUserUseCase _getCurrentUser;
   late final GetUserByUidUseCase _getUserByUid;
-  late final GetResultByUserUidUseCase _getResultByUid;
+  late final GetResultByCitaUidUseCase _getResultByCitaUidUseCase;
   late final GetServiceByUid _getServiceByUid;
 
   final FirebaseResultDataSource _resultDataSource = FirebaseResultDataSource();
@@ -47,6 +61,15 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
     super.initState();
     _initUseCases();
     _loadData();
+
+    // Si hay error en los datos, esperar 4s antes de mostrar el widget de error
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted) {
+        setState(() {
+          _showLoadingBeforeError = false;
+        });
+      }
+    });
   }
 
   void _initUseCases() {
@@ -58,10 +81,41 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
     _getUserByUid = GetUserByUidUseCase(
       UserRepositoryImpl(FirebaseUserDataSource()),
     );
-    _getResultByUid = GetResultByUserUidUseCase(resultRepository);
+    _getResultByCitaUidUseCase = GetResultByCitaUidUseCase(resultRepository);
     _getServiceByUid = GetServiceByUid(
       ServiceRepositoryImpl(FirebaseServiceDataSource()),
     );
+  }
+
+  Future<List<FullParameterData>> getFullParameters(
+    List<Map<String, dynamic>> paramsValue,
+  ) async {
+    final List<FullParameterData> results = [];
+
+    for (final param in paramsValue) {
+      final String id = param['id'];
+      final String value = param['value'];
+
+      try {
+        final parameter = await getParameterByUid(id);
+        if (parameter != null) {
+          results.add(
+            FullParameterData(
+              id: id,
+              name: parameter.name,
+              setValue: parameter.setValue,
+              value: value,
+            ),
+          );
+        } else {
+          print('No se encontró el parámetro con ID $id');
+        }
+      } catch (e) {
+        print('Error al obtener datos para el parámetro con ID $id: $e');
+      }
+    }
+
+    return results;
   }
 
   Future<void> _loadData() async {
@@ -70,7 +124,8 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
     if (uid == null) return;
 
     final userResult = await _getUserByUid.call(uid);
-    final resultData = await _getResultByUid.call(uid);
+    final resultData = await _getResultByCitaUidUseCase.call(widget.citaUid);
+    print('resultData en resultados screen $resultData');
     if (userResult.data == null || resultData == null) return;
 
     final serviceResult = await _getServiceByUid.call(
@@ -78,27 +133,63 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
     );
     if (serviceResult.data == null) return;
 
-    final paramValues = await _resultDataSource.getSubcollectionParameters(
-      resultData.uid!,
-      resultData.uidService ?? '',
+    final paramsValueResult = await _resultDataSource
+        .getSubcollectionParameters(
+          resultData.uid!,
+          resultData.uidService ?? '',
+        );
+
+    final parameterObjects = await getFullParameters(
+      List<Map<String, dynamic>>.from(paramsValueResult),
     );
 
     setState(() {
       currentUser = userResult.data;
       result = resultData;
       service = serviceResult.data;
-      parameters = paramValues;
+      paramsValue = paramsValueResult;
+      fullParameterData = parameterObjects;
       _isLoading = false;
     });
+
+    print('paramsValue $paramsValue');
+  }
+
+  Future<Parameter?> getParameterByUid(String uid) async {
+    return _getParameterByUid(uid);
+  }
+
+  Parameter? _getParameterByUid(String uid) {
+    try {
+      return parametersList.firstWhere((param) => param.uid == uid);
+    } catch (e) {
+      return null; // No encontrado
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading ||
-        currentUser == null ||
-        result == null ||
-        service == null) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (result == null || service == null) {
+      if (_showLoadingBeforeError) {
+        return const Scaffold(
+          backgroundColor: Colors.black87,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(color: Colors.white),
+                SizedBox(height: 20),
+                Text(
+                  'Buscando resultados...',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else {
+        return const NoAppointments(title: 'Resultados');
+      }
     }
 
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -261,7 +352,7 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
                                 Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Resultados',
+                                    'Valores',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -270,7 +361,7 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
                                 Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
-                                    'Valores',
+                                    'Resultados',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -278,23 +369,24 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
                                 ),
                               ],
                             ),
-                            ...parameters.map((param) {
-                              final setRange = param.setValue.join(' - ');
+                            ...fullParameterData.map((param) {
+                              final setRange =
+                                  param.setValue.length >= 2
+                                      ? '${param.setValue[0]} - ${param.setValue[1]}'
+                                      : param.setValue.join(' - ');
                               return TableRow(
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(param.nombre),
+                                    child: Text(param.name),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '$setRange ${param.unidades ?? ''}',
-                                    ),
+                                    child: Text(setRange),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(param.valorReferencia ?? ''),
+                                    child: Text(param.value),
                                   ),
                                 ],
                               );

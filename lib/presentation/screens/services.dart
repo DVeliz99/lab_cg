@@ -9,8 +9,38 @@ class ServicesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void goToAppController(BuildContext context) {
+      Navigator.pushNamed(context, 'app-controller');
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Servicios')),
+      appBar: AppBar(
+        title: const Text('Configuración'),
+        backgroundColor: Colors.white.withOpacity(0.8),
+        foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Vuelve a la pantalla anterior
+          },
+        ),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'home') {
+                goToAppController(context);
+              }
+            },
+            itemBuilder:
+                (context) => [
+                  const PopupMenuItem<String>(
+                    value: 'home',
+                    child: Text('Home'),
+                  ),
+                ],
+          ),
+        ],
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream:
             FirebaseFirestore.instance

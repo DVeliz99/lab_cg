@@ -32,4 +32,9 @@ class Result {
       paramUids: List<String>.from(map['param_uids'] ?? []),
     );
   }
+
+  @override
+  String toString() {
+    return 'Result(uid: $uid, uidService: $uidService, createdAt: $createdAt, comment: $comment)';
+  }
 }

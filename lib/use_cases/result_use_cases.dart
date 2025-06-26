@@ -1,14 +1,14 @@
 import 'package:lab_cg/domain/result.dart';
 import 'package:lab_cg/data/repositories/result_repository.dart';
 
-class GetResultByUserUidUseCase {
+class GetResultByCitaUidUseCase {
   final ResultRepository repository;
 
-  GetResultByUserUidUseCase(this.repository);
+  GetResultByCitaUidUseCase(this.repository);
 
   Future<Result?> call(String uid) async {
     try {
-      return await repository.getResultByUserUid(uid);
+      return await repository.getResultbyCitaUid(uid);
     } catch (e) {
       print('Error al obtener resultado: $e');
       return null;

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lab_cg/core/firebase_config.dart';
 import 'package:lab_cg/presentation/screens/history.dart';
@@ -5,6 +6,7 @@ import 'package:lab_cg/presentation/screens/resultados.dart';
 import 'package:lab_cg/presentation/screens/services.dart';
 import 'package:lab_cg/presentation/screens/settings.dart';
 import 'package:lab_cg/presentation/screens/cita.dart';
+import 'package:lab_cg/presentation/widgets/no_appointments.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 import 'package:lab_cg/presentation/screens/profile.dart';
@@ -60,12 +62,28 @@ class MyApp extends StatelessWidget {
         "settings": (context) => SettingsScreen(),
         "agendar-cita": (context) => const AgendarCitaScreen(),
         "profile": (context) => const ProfileScreen(),
-        "results": (context) => const ResultadosScreen(),
         "services": (context) => const ServicesScreen(),
         "appoinment": (context) => const AgendarCitaScreen(),
         "history": (context) => const HistoryScreen(),
+        "results": (context) {
+          final args = ModalRoute.of(context)!.settings.arguments;
+          if (args == null || args is! String) {
+            return NoAppointments(title: 'Resultados');
+          }
+
+          return ResultadosScreen(citaUid: args);
+        },
       },
     );
+  }
+}
+
+void listarIdsEnApp() async {
+  final snapshot =
+      await FirebaseFirestore.instance.collection('parametters').get();
+  print("📦 Lista de IDs que ve esta app:");
+  for (final doc in snapshot.docs) {
+    print("👉 ${doc.id}");
   }
 }
 
