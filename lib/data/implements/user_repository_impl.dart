@@ -19,6 +19,15 @@ class UserRepositoryImpl implements UserRepository {
     return dataSource.getUserByUid(id);
   }
 
+  @override
+  Future<AppUser> setNotification(String uid, bool value) async {
+    return await dataSource.setNotification(uid, value);
+  }
+
+  @override
+  Future<AppUser> setContactMethod(String uid, String contactMethod) async {
+    return await dataSource.setContactMethod(uid, contactMethod);
+  }
   /*
   @override
   Future<void> createUser(User user) {

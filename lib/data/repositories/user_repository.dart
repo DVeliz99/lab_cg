@@ -1,4 +1,3 @@
-import 'package:lab_cg/domain/auth.dart';
 import 'package:lab_cg/domain/user.dart';
 
 abstract class UserRepository {
@@ -10,4 +9,6 @@ abstract class UserRepository {
   // Future<void> updateUser(User user);
   // Future<void> deleteUser(int id);
   // Future<void> saveUserProfile(UserProfile user);
+  Future<AppUser> setNotification(String uid, bool value);
+  Future<AppUser> setContactMethod(String uid, String contactMethod);
 }
