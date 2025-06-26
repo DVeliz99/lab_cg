@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lab_cg/data/data_sources/user_data_source.dart';
 import 'package:lab_cg/domain/user.dart';
 

@@ -298,7 +298,7 @@ class _ResultadosScreenState extends State<ResultadosScreen> {
                                   ),
                                 ],
                               );
-                            }).toList(),
+                            }),
                           ],
                         ),
                         const SizedBox(height: 16),

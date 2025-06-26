@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/domain/profile.dart';
-import 'package:lab_cg/core/result.dart';
 import 'package:lab_cg/data/implements/profile_repository_impl.dart';
 import 'package:lab_cg/data/firebase_data_sources/firebase_profile_data_source.dart';
 import 'package:lab_cg/use_cases/profile_use_cases.dart';

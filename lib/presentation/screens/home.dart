@@ -119,10 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
 
-    void _goToAppController(BuildContext context) {
-      Navigator.pushNamed(context, 'app-controller');
-    }
-
     // Inicializar localización para fechas
     await initializeDateFormatting('es_ES', null);
 
@@ -132,6 +128,18 @@ class _HomeScreenState extends State<HomeScreen> {
       formattedDate = DateFormat("d 'de' MMMM 'de' y", 'es_ES').format(fecha);
       formattedTime = DateFormat("h:mm a", 'es_ES').format(fecha);
     });
+  }
+
+  void _goToAppController(BuildContext context) {
+    Navigator.pushNamed(context, 'app-controller');
+  }
+
+  void _goToServices(BuildContext context) {
+    Navigator.pushNamed(context, 'services');
+  }
+
+  void _goToHistory(BuildContext context) {
+    Navigator.pushNamed(context, 'history');
   }
 
   Future<String> _getCurrentUserUidLoggedIn() async {
@@ -327,57 +335,82 @@ class _HomeScreenState extends State<HomeScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
-                                    width: screenWidth * 0.42,
-                                    padding: EdgeInsets.symmetric(vertical: 16),
-                                    margin: EdgeInsets.symmetric(horizontal: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.black),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.biotech, size: baseTextSize),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          'Servicios',
-                                          style: TextStyle(
-                                            fontSize: baseTextSize,
-                                            fontWeight: FontWeight.bold,
+                                  InkWell(
+                                    onTap: () => _goToServices(context),
+                                    borderRadius: BorderRadius.circular(
+                                      12,
+                                    ), // para que el splash siga la forma
+                                    child: Container(
+                                      width: screenWidth * 0.42,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16,
+                                      ),
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: Colors.black),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.biotech,
+                                            size: baseTextSize,
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(width: 10),
+                                          Text(
+                                            'Servicios',
+                                            style: TextStyle(
+                                              fontSize: baseTextSize,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    width: screenWidth * 0.42,
-                                    padding: EdgeInsets.symmetric(vertical: 16),
-                                    margin: EdgeInsets.symmetric(horizontal: 4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: Colors.black),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.assignment,
-                                          size: baseTextSize,
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          'Historial',
-                                          style: TextStyle(
-                                            fontSize: baseTextSize,
-                                            fontWeight: FontWeight.bold,
+
+                                  InkWell(
+                                    onTap:
+                                        () => _goToHistory(
+                                          context,
+                                        ), // Llama al método de navegación
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Container(
+                                      width: screenWidth * 0.42,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16,
+                                      ),
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: Colors.black),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.assignment,
+                                            size: baseTextSize,
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(width: 10),
+                                          Text(
+                                            'Historial',
+                                            style: TextStyle(
+                                              fontSize: baseTextSize,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lab_cg/core/firebase_config.dart';
+import 'package:lab_cg/presentation/screens/history.dart';
 import 'package:lab_cg/presentation/screens/resultados.dart';
+import 'package:lab_cg/presentation/screens/services.dart';
 import 'package:lab_cg/presentation/screens/settings.dart';
 import 'package:lab_cg/presentation/screens/cita.dart';
 import 'popup_menu.dart';
 import 'presentation/screens/login.dart';
 import 'package:lab_cg/presentation/screens/profile.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -40,6 +43,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      // 👇 Añade esto:
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', 'ES'), // Español
+        Locale('en', 'US'), // Inglés (puedes quitarlo si no lo usas)
+      ],
       initialRoute: 'init',
       routes: {
         "init": (context) => Login(),
@@ -48,6 +61,9 @@ class MyApp extends StatelessWidget {
         "agendar-cita": (context) => const AgendarCitaScreen(),
         "profile": (context) => const ProfileScreen(),
         "results": (context) => const ResultadosScreen(),
+        "services": (context) => const ServicesScreen(),
+        "appoinment": (context) => const AgendarCitaScreen(),
+        "history": (context) => const HistoryScreen(),
       },
     );
   }

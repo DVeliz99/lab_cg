@@ -2,8 +2,6 @@ import 'package:lab_cg/core/failure.dart';
 import 'package:lab_cg/core/result.dart';
 import 'package:lab_cg/domain/user.dart';
 import '/data/repositories/user_repository.dart';
-import '/domain/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 
 class GetUserByUidUseCase {
   final UserRepository repository;

@@ -10,6 +10,7 @@ import 'package:lab_cg/presentation/widgets/toggle.dart';
 import 'package:lab_cg/presentation/widgets/divider.dart';
 import 'package:lab_cg/use_cases/auth_use_cases.dart';
 import 'package:lab_cg/use_cases/user_use_cases.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -88,6 +89,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _goToProfile(BuildContext context) {
     Navigator.pushNamed(context, 'profile');
+  }
+
+  Future<void> openPrivacyWeb() async {
+    final Uri url = Uri.parse('https://privacyanddataprocessing.netlify.app/');
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'No se pudo abrir la URL: $url';
+    }
   }
 
   Future<void> cargarValores() async {
@@ -438,24 +449,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   const CustomDivider(),
 
                                   // Acerca de
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.info, size: 40),
-                                        SizedBox(width: 12),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 11),
-                                          child: Text(
-                                            'Acerca de',
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.bold,
+                                  GestureDetector(
+                                    onTap:
+                                        openPrivacyWeb, // 👉 Llama a tu función cuando se toca
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.info, size: 40),
+                                          SizedBox(width: 12),
+                                          Container(
+                                            margin: EdgeInsets.only(left: 11),
+                                            child: Text(
+                                              'Acerca de',
+                                              style: TextStyle(
+                                                fontSize: 25,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],
