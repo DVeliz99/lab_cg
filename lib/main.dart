@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lab_cg/core/firebase_config.dart';
 import 'package:lab_cg/presentation/screens/history.dart';
 import 'package:lab_cg/presentation/screens/resultados.dart';
@@ -7,11 +9,9 @@ import 'package:lab_cg/presentation/screens/services.dart';
 import 'package:lab_cg/presentation/screens/settings.dart';
 import 'package:lab_cg/presentation/screens/cita.dart';
 import 'package:lab_cg/presentation/widgets/no_appointments.dart';
-import 'popup_menu.dart';
-import 'presentation/screens/login.dart';
+import 'package:lab_cg/presentation/screens/login.dart';
 import 'package:lab_cg/presentation/screens/profile.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'popup_menu.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -20,9 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings(
-        '@mipmap/ic_launcher',
-      ); // ícono de la notificación
+      AndroidInitializationSettings('@mipmap/ic_launcher');
 
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -30,7 +28,6 @@ void main() async {
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-  WidgetsFlutterBinding.ensureInitialized();
   await FirebaseInitializer.initialize();
   runApp(const MyApp());
 }
@@ -45,16 +42,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      // 👇 Añade esto:
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('es', 'ES'), // Español
-        Locale('en', 'US'), // Inglés (puedes quitarlo si no lo usas)
-      ],
+      supportedLocales: const [Locale('es', 'ES'), Locale('en', 'US')],
       initialRoute: 'init',
       routes: {
         "init": (context) => Login(),
@@ -70,7 +63,6 @@ class MyApp extends StatelessWidget {
           if (args == null || args is! String) {
             return NoAppointments(title: 'Resultados');
           }
-
           return ResultadosScreen(citaUid: args);
         },
       },
@@ -86,9 +78,3 @@ void listarIdsEnApp() async {
     print("👉 ${doc.id}");
   }
 }
-
-/*  // Inyección de dependencias
-  final firestore = FirebaseFirestore.instance;
-  final dataSource = FirebaseUserDataSource(firestore: firestore);
-  final repository = UserRepositoryImpl(dataSource: dataSource);
-   */

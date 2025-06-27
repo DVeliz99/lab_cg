@@ -226,54 +226,81 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Agendar cita')),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              widget.service.name,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Text(
+                  widget.service.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ListTile(
+                  leading: const Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    dateFmt,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime.now().add(const Duration(days: 365)),
+                      initialDate: DateTime.now(),
+                      locale: const Locale('es'),
+                    );
+                    if (picked != null) setState(() => _selectedDate = picked);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.access_time_outlined,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    timeFmt,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  onTap: () async {
+                    final picked = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
+                    if (picked != null) setState(() => _selectedTime = picked);
+                  },
+                ),
+                const Spacer(),
+                ElevatedButton.icon(
+                  icon:
+                      _sending
+                          ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                          : const Icon(Icons.check),
+                  label: const Text('Confirmar'),
+                  onPressed: (_sending || !userReady) ? null : _submit,
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            ListTile(
-              leading: const Icon(Icons.calendar_today_outlined),
-              title: Text(dateFmt),
-              onTap: () async {
-                final picked = await showDatePicker(
-                  context: context,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 365)),
-                  initialDate: DateTime.now(),
-                  locale: const Locale('es'),
-                );
-                if (picked != null) setState(() => _selectedDate = picked);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.access_time_outlined),
-              title: Text(timeFmt),
-              onTap: () async {
-                final picked = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.now(),
-                );
-                if (picked != null) setState(() => _selectedTime = picked);
-              },
-            ),
-            const Spacer(),
-            ElevatedButton.icon(
-              icon:
-                  _sending
-                      ? const SizedBox(
-                        width: 16,
-                        height: 16,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                      : const Icon(Icons.check),
-              label: const Text('Confirmar'),
-              onPressed: (_sending || !userReady) ? null : _submit,
-            ),
-          ],
+          ),
         ),
       ),
     );

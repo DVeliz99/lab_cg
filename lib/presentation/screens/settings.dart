@@ -91,13 +91,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Navigator.pushNamed(context, 'profile');
   }
 
-  Future<void> openPrivacyWeb() async {
+  void openPrivacyWeb(BuildContext context) async {
     final Uri url = Uri.parse('https://privacyanddataprocessing.netlify.app/');
-
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'No se pudo abrir la URL: $url';
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No se pudo abrir el enlace')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     }
   }
 
@@ -451,7 +456,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   // Acerca de
                                   GestureDetector(
                                     onTap:
-                                        openPrivacyWeb, // 👉 Llama a tu función cuando se toca
+                                        () => openPrivacyWeb(
+                                          context,
+                                        ), // ✅ CORRECTO
                                     child: Padding(
                                       padding: const EdgeInsets.all(10),
                                       child: Row(

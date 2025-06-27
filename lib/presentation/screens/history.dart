@@ -51,90 +51,101 @@ class HistoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream:
-            FirebaseFirestore.instance
-                .collection('appoinments')
-                .where('uid_user', isEqualTo: currentUser.uid)
-                .orderBy('created_at', descending: true)
-                .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
+          ),
+        ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream:
+              FirebaseFirestore.instance
+                  .collection('appoinments')
+                  .where('uid_user', isEqualTo: currentUser.uid)
+                  .orderBy('created_at', descending: true)
+                  .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
 
-          final docs = snapshot.data!.docs;
-          if (docs.isEmpty) {
-            return const Center(child: Text('No tienes citas registradas.'));
-          }
-
-          return ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-            itemCount: docs.length,
-            itemBuilder: (_, i) {
-              final data = docs[i].data()! as Map<String, dynamic>;
-              final cita = CitaLaboratorio.fromMap(data, docs[i].id);
-
-              return FutureBuilder<DocumentSnapshot>(
-                future:
-                    FirebaseFirestore.instance
-                        .collection('services')
-                        .doc(cita.uidService)
-                        .get(),
-                builder: (context, serviceSnap) {
-                  String serviceName = '';
-                  if (serviceSnap.hasData && serviceSnap.data!.exists) {
-                    serviceName =
-                        Service.fromJson(
-                          serviceSnap.data!.data()! as Map<String, dynamic>,
-                          id: serviceSnap.data!.id,
-                        ).name;
-                  }
-
-                  return Card(
-                    child: ListTile(
-                      onTap: () {
-                        // Aquí pones lo que debe ocurrir al hacer clic
-                        print('Cita seleccionada: $cita');
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) =>
-                                    ResultadosScreen(citaUid: cita.uid!),
-                          ),
-                        );
-                      },
-                      leading: Icon(
-                        cita.active
-                            ? Icons.schedule
-                            : Icons.check_circle_outline,
-                      ),
-                      title: Text(
-                        serviceName.isEmpty
-                            ? 'Servicio: ${cita.uidService}'
-                            : serviceName,
-                      ),
-                      subtitle: Text(
-                        '${cita.requestedAt.toLocal().toString().substring(0, 16)}  •  ${cita.hora}',
-                      ),
-                      trailing: Icon(
-                        cita.active
-                            ? Icons.hourglass_top_outlined
-                            : Icons.check,
-                        color: cita.active ? Colors.orange : Colors.green,
-                      ),
-                    ),
-                  );
-                },
+            final docs = snapshot.data!.docs;
+            if (docs.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No tienes citas registradas.',
+                  style: TextStyle(color: Colors.white),
+                ),
               );
-            },
-          );
-        },
+            }
+
+            return ListView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+              itemCount: docs.length,
+              itemBuilder: (_, i) {
+                final data = docs[i].data()! as Map<String, dynamic>;
+                final cita = CitaLaboratorio.fromMap(data, docs[i].id);
+
+                return FutureBuilder<DocumentSnapshot>(
+                  future:
+                      FirebaseFirestore.instance
+                          .collection('services')
+                          .doc(cita.uidService)
+                          .get(),
+                  builder: (context, serviceSnap) {
+                    String serviceName = '';
+                    if (serviceSnap.hasData && serviceSnap.data!.exists) {
+                      serviceName =
+                          Service.fromJson(
+                            serviceSnap.data!.data()! as Map<String, dynamic>,
+                            id: serviceSnap.data!.id,
+                          ).name;
+                    }
+
+                    return Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) =>
+                                      ResultadosScreen(citaUid: cita.uid!),
+                            ),
+                          );
+                        },
+                        leading: Icon(
+                          cita.active
+                              ? Icons.schedule
+                              : Icons.check_circle_outline,
+                        ),
+                        title: Text(
+                          serviceName.isEmpty
+                              ? 'Servicio: ${cita.uidService}'
+                              : serviceName,
+                        ),
+                        subtitle: Text(
+                          '${cita.requestedAt.toLocal().toString().substring(0, 16)}  •  ${cita.hora}',
+                        ),
+                        trailing: Icon(
+                          cita.active
+                              ? Icons.hourglass_top_outlined
+                              : Icons.check,
+                          color: cita.active ? Colors.orange : Colors.green,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
