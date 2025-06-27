@@ -6,28 +6,28 @@
 
 ## 📲 Funcionalidades Principales
 
-- **Inicio de sesión seguro**  
+- **Inicio de sesión seguro**
   Acceso mediante usuario y contraseña para pacientes registrados.
 
-- **Agendar citas médicas a domicilio**  
+- **Agendar citas médicas a domicilio**
   Selección de tipo de examen, fecha, hora y dirección para toma de muestras en casa.
 
-- **Catálogo de servicios clínicos**  
+- **Catálogo de servicios clínicos**
   Visualización de estudios disponibles con precios y agendamiento rápido.
 
-- **Pantalla de inicio personalizada**  
+- **Pantalla de inicio personalizada**
   Muestra la próxima cita programada y accesos directos a funcionalidades clave.
 
-- **Historial de resultados clínicos**  
+- **Historial de resultados clínicos**
   Acceso a resultados por fecha, con opción para descargar en PDF.
 
-- **Visualización detallada de resultados**  
+- **Visualización detallada de resultados**
   Valores como hemoglobina, glóbulos rojos, plaquetas, entre otros.
 
-- **Gestión de perfil**  
+- **Gestión de perfil**
   Edición de información personal como nombre, edad, sexo, tipo de sangre, altura, peso, teléfono, correo y dirección.
 
-- **Configuración del sistema**  
+- **Configuración del sistema**
   Administración del método de contacto preferido, notificaciones e información general sobre la app.
 
 ---
