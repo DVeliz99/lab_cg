@@ -1,3 +1,11 @@
+## 0.15.0 (2025-06-27)
+
+## 0.14.0 (2025-06-27)
+
+### Feat
+
+- actualiza pantallas con fondo degradado y mejoras visuales (#23)
+
 ## 0.13.0 (2025-06-26)
 
 ### Fix

@@ -1,50 +1,88 @@
-# 📁 TuProyecto
+# 🧪 LAB_CG - App de Salud Móvil
 
-Este repositorio contiene la estructura modular del proyecto, organizado por capas para mantener una separación clara de responsabilidades.
-
----
-
-## 📂 Estructura del proyecto
-
-📁 LAB_CG/
-│
-├── 📁 data/
-│ ├── 📁 data_sources/ # Fuentes de datos (API, Firebase, Base de datos local)
-│ ├── 📁 firebase_data_source/ # Implementación específica de Firebase como fuente de datos
-│ ├── 📁 repositories/ # Interfaces de repositorios
-│ ├── 📁 implements_repository/ # Implementaciones concretas de los repositorios
-│
-├── 📁 Core/
-│ ├── 📁 firebase/ # Configuración de Firebase (autenticación, base de datos, almacenamiento)
-│ ├── 📁 machine_learning/ # Modelos de Machine Learning y procesamiento de datos
-│ ├── 📁 utils/ # Funciones auxiliares y configuraciones comunes
-│ ├── 📁 errors/ # Manejo de errores global
-│
-├── 📁 domain/ # Contiene las entidades y lógica central de negocio
-│
-├── 📁 use_cases/ # Lógica de negocio y operaciones principales
-│
-├── 📁 presentation/
-│ ├── 📁 screens/ # Pantallas de la aplicación
-│ ├── 📁 widgets/ # Componentes reutilizables
+**LAB_CG** es una aplicación móvil desarrollada con el objetivo de brindar comodidad, seguridad y eficiencia a los pacientes al momento de gestionar sus servicios de salud. Con una interfaz moderna y funcional, permite agendar citas, visualizar resultados clínicos y llevar un control personalizado desde el celular.
 
 ---
 
-## ✅ Buenas prácticas
+## 📲 Funcionalidades Principales
 
-- Mantener las **dependencias unidireccionales**:
-  `presentation → use_cases → domain`
-- Usar **interfaces** para invertir dependencias en `data/repositories`.
-- Realizar **tests unitarios** sobre entidades y casos de uso.
-- Reutilizar widgets y evitar lógica de negocio en la capa de UI.
+- **Inicio de sesión seguro**
+  Acceso mediante usuario y contraseña para pacientes registrados.
+
+- **Agendar citas médicas a domicilio**
+  Selección de tipo de examen, fecha, hora y dirección para toma de muestras en casa.
+
+- **Catálogo de servicios clínicos**
+  Visualización de estudios disponibles con precios y agendamiento rápido.
+
+- **Pantalla de inicio personalizada**
+  Muestra la próxima cita programada y accesos directos a funcionalidades clave.
+
+- **Historial de resultados clínicos**
+  Acceso a resultados por fecha, con opción para descargar en PDF.
+
+- **Visualización detallada de resultados**
+  Valores como hemoglobina, glóbulos rojos, plaquetas, entre otros.
+
+- **Gestión de perfil**
+  Edición de información personal como nombre, edad, sexo, tipo de sangre, altura, peso, teléfono, correo y dirección.
+
+- **Configuración del sistema**
+  Administración del método de contacto preferido, notificaciones e información general sobre la app.
 
 ---
 
-## 👥 Equipo
+## 🏗️ Estructura del Proyecto
 
-- **Coordinador**: Dario Veliz
-- **Equipo**: Mabel Pineda, Fernando Mendez, Leonel Sandoval
+La aplicación sigue una **arquitectura limpia (Clean Architecture)**, separando responsabilidades en diferentes capas para facilitar el mantenimiento y escalabilidad del código.
+
+lib/
+├── core/ # Configuraciones generales y utilidades del sistema
+├── data/
+│ ├── data_sources/ # Conexión con las fuentes de datos (Firebase, APIs, local)
+│ ├── firebase_data_sources/ # Implementaciones específicas para Firebase
+│ ├── implements/ # Implementaciones concretas de repositorios
+│ └── repositories/ # Interfaces de repositorios
+├── domain/ # Entidades centrales como usuario, cita, resultados, etc.
+├── presentation/
+│ ├── screens/ # Pantallas de la aplicación
+│ └── widgets/ # Componentes reutilizables de UI
+└── use_cases/ # Casos de uso que definen la lógica del negocio
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Flutter** (framework principal)
+- **Firebase Authentication** (gestión de usuarios)
+- **Cloud Firestore** (base de datos en tiempo real)
+- **Firebase Storage** (almacenamiento de PDFs de resultados)
+- **Dart** (lenguaje de programación)
 
 ---
 
-> 💬 Para cualquier duda sobre la estructura del proyecto, por favor contacta al coordinador.
+## 🚀 Instalación y Build
+
+### Requisitos:
+
+- Flutter SDK instalado
+- Android Studio o Visual Studio Code
+- Emulador Android o dispositivo físico
+
+### Clonar el repositorio:
+
+### Clonar el repositorio:
+
+git clone https://github.com/DVeliz99/lab_cg.git
+cd lab_cg
+
+- Instalar dependencias:
+
+flutter pub get
+
+- Correr en modo desarrollo:
+
+flutter run
+Generar APK:
+
+flutter build apk --release
+El APK generado se encuentra en:
+build/app/outputs/flutter-apk/app-release.apk
