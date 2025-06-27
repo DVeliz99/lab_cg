@@ -10,10 +10,10 @@ class FirebaseAuthDataSource implements AuthDataSource {
   @override
   Future<void> logout() async {
     try {
-      await _firebaseAuth.signOut();
+      await FirebaseAuth.instance.signOut();
+      print("Sesión cerrada correctamente");
     } catch (e) {
-      // Maneja errores si quieres o simplemente relanza
-      throw Exception('Error during logout: $e');
+      print("Error al cerrar sesión: $e");
     }
   }
 

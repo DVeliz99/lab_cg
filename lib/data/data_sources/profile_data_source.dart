@@ -12,4 +12,9 @@ class ProfileDataSource {
     if (_profiles.isEmpty) return null;
     return _profiles.first;
   }
+
+  Future<void> addNotification(String uid) {
+    // TODO: implement addNotification
+    throw UnimplementedError();
+  }
 }

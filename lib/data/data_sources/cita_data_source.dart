@@ -1,5 +1,4 @@
 import 'package:lab_cg/domain/citas.dart';
-import 'package:lab_cg/data/repositories/cita_repository.dart';
 
 abstract class CitaDataSource {
   Future<CitaLaboratorio?> getCitaFromUserId(String id);
